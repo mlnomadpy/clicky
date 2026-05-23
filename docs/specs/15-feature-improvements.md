@@ -106,6 +106,8 @@ This is also the most-tested function we have (every `[POINT:x,y]` flows through
 
 **Risk**: low.
 
+*Status: shipped in phase-0/show-clicky-toggle.*
+
 ### 1.8 Make the push-to-talk shortcut user-configurable
 
 **Current state**: `BuddyPushToTalkShortcut.currentShortcutOption = .controlOption`. The enum already supports 5 options (`shiftFunction`, `controlOption`, `shiftControl`, `controlOptionSpace`, `shiftControlSpace`) — the wiring exists but isn't exposed.
