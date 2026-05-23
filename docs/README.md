@@ -32,7 +32,8 @@ docs/
 │   ├── 12-vector-search-and-memory.md
 │   ├── 13-folder-structure-fsd.md
 │   ├── 14-testing-strategy.md
-│   └── 15-feature-improvements.md
+│   ├── 15-feature-improvements.md
+│   └── 16-tier-3-polish.md
 └── adr/                             ← decisions, immutable once accepted
     ├── README.md                    ← ADR index + process
     ├── 0000-template.md
@@ -80,6 +81,7 @@ docs/
 | 13 | [FSD folder structure](./specs/13-folder-structure-fsd.md) | Vertical-slice layout with strict layer-import rules. Six-PR migration plan. |
 | 14 | [Testing strategy](./specs/14-testing-strategy.md) | XCTest, the test pyramid, TDD policy, CI workflow, ~70 starter tests. |
 | 15 | [Feature improvements](./specs/15-feature-improvements.md) | 10 mechanical cleanups + 9 behavior improvements + 10 polish items surfaced by the audit. |
+| 16 | [Tier-3 polish](./specs/16-tier-3-polish.md) | Mini-specs for four Tier-3 polish items: panic clear, in-app feedback form, latency readout, login-item opt-in. |
 
 ## What lives in each ADR
 
