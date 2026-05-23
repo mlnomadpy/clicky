@@ -132,6 +132,8 @@ This is also the most-tested function we have (every `[POINT:x,y]` flows through
 
 **Risk**: low.
 
+*Status: partially shipped in phase-0/remove-unused-assets.* The audit identified five bundled assets at the root of `leanring-buddy/`. Three (`enter.mp3`, `eshop.mp3`, `codex-add-project.png`) had zero references in any Swift file or the asset catalog and were deleted (~119 KB saved). `ff.mp3` is actively used by `CompanionManager.startOnboardingMusic()` and stays. `steve.jpg` exists in two copies (a loose root file AND `Assets.xcassets/steve.imageset/steve.jpg`); both are unreferenced but the asset-catalog deletion is deferred until the FSD restructure when `Resources/` exists and the asset-catalog cleanup can land together.
+
 ---
 
 ## Tier 2 — Behavior improvements
