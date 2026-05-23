@@ -6,12 +6,23 @@ Tier 1 items §1.4–§1.6 as dead code that is not on the active hot path.
 
 **Nothing in this list is deleted by the PR that introduces this file.**
 The PR that introduces this file only marks and documents the intent.
-The actual code removal happens in a later **Wave-2 PR** that updates
-`leanring-buddy.xcodeproj/project.pbxproj` while the user watches in Xcode.
-Removing Swift sources without updating `project.pbxproj` breaks the build,
-and `project.pbxproj` edits cannot be safely verified from the terminal
-because `xcodebuild` invalidates TCC (Transparency, Consent, and Control)
-permissions per `CLAUDE.md`.
+The actual code removal happens in a later **Wave-2 PR**.
+
+### Update — pbxproj surgery is NOT required
+
+When this doc was originally drafted, we expected the Wave-2 PR to also
+edit `leanring-buddy.xcodeproj/project.pbxproj` to drop each file's
+references. **That assumption was wrong.** The project uses Xcode 16's
+`PBXFileSystemSynchronizedRootGroup` (`objectVersion = 77`): the entire
+`leanring-buddy/` directory is auto-synchronized via a single group
+UUID, and individual Swift files are not registered in `project.pbxproj`
+at all. See `docs/specs/wave2-pbxproj-surgery.md` for the full finding.
+
+**Consequence**: removing a Swift file is `git rm <path>` and nothing
+else. Adding a Swift file is creating the file and nothing else. The
+risk profile of the Wave-2 PR is therefore much lower than originally
+documented — no pbxproj surgery, no manual Xcode UI work required for
+the deletion itself.
 
 ---
 
