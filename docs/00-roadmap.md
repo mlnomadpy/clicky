@@ -59,7 +59,7 @@ We refactor the codebase before adding new features. Without this, every new fea
 | Adopt Feature Slice Design folder structure | — | ○ | `specs/13-folder-structure-fsd.md` |
 | Establish testing strategy + first 30 tests | — | ○ | `specs/14-testing-strategy.md` |
 | Apply audit-driven feature improvements (low-risk cleanups) | — | ○ | `specs/15-feature-improvements.md` (Tier 1) |
-| Remove dead code per `DELETION_PLAN.md` (Wave-2 PR) | — | ○ | `specs/15-feature-improvements.md` §1.4–§1.6 |
+| Remove dead code (OpenAIAPI.swift, ElementLocationDetector.swift, legacy WPM helpers) | — | ⏺ | `specs/15-feature-improvements.md` §1.4–§1.6 |
 | Write ADRs for the existing system | — | ◐ | `adr/0001` through `adr/0014` |
 | Re-enable Sparkle auto-update | — | ○ | `specs/15-feature-improvements.md` |
 
