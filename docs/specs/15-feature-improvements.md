@@ -106,6 +106,8 @@ This is also the most-tested function we have (every `[POINT:x,y]` flows through
 
 **Risk**: low.
 
+*Status: shipped in phase-0/show-clicky-toggle.*
+
 ### 1.8 Make the push-to-talk shortcut user-configurable
 
 **Current state**: `BuddyPushToTalkShortcut.currentShortcutOption = .controlOption`. The enum already supports 5 options (`shiftFunction`, `controlOption`, `shiftControl`, `controlOptionSpace`, `shiftControlSpace`) — the wiring exists but isn't exposed.
@@ -129,6 +131,8 @@ This is also the most-tested function we have (every `[POINT:x,y]` flows through
 **Fix**: move all to `Resources/`. Use them via `Bundle.main.url(forResource:withExtension:)` (already the pattern). Audit which ones are actually referenced — `enter.mp3` and `eshop.mp3` don't appear to be played anywhere in `CompanionManager` (only `ff.mp3` for onboarding music) and might be deletable.
 
 **Risk**: low.
+
+*Status: partially shipped in phase-0/remove-unused-assets.* The audit identified five bundled assets at the root of `leanring-buddy/`. Three (`enter.mp3`, `eshop.mp3`, `codex-add-project.png`) had zero references in any Swift file or the asset catalog and were deleted (~119 KB saved). `ff.mp3` is actively used by `CompanionManager.startOnboardingMusic()` and stays. `steve.jpg` exists in two copies (a loose root file AND `Assets.xcassets/steve.imageset/steve.jpg`); both are unreferenced but the asset-catalog deletion is deferred until the FSD restructure when `Resources/` exists and the asset-catalog cleanup can land together.
 
 ---
 

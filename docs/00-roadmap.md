@@ -31,11 +31,14 @@ docs/
 │   ├── 12-vector-search-and-memory.md
 │   ├── 13-folder-structure-fsd.md
 │   ├── 14-testing-strategy.md
-│   └── 15-feature-improvements.md
+│   ├── 15-feature-improvements.md
+│   ├── 16-tier-3-polish.md
+│   └── wave2-pbxproj-surgery.md    ← investigation, kept for archaeology
 └── adr/                             ← decisions, immutable once accepted
+    ├── 0000-template.md
     ├── 0001-menu-bar-only-app.md
     ├── 0002-cloudflare-worker-proxy.md
-    └── …
+    └── …                            (0003–0023; see adr/README.md for the index)
 ```
 
 ## Status legend
@@ -57,13 +60,19 @@ We refactor the codebase before adding new features. Without this, every new fea
 | Item | Owner | Status | Spec |
 |------|-------|--------|------|
 | Adopt Feature Slice Design folder structure | — | ○ | `specs/13-folder-structure-fsd.md` |
-| Establish testing strategy + first 30 tests | — | ○ | `specs/14-testing-strategy.md` |
-| Apply audit-driven feature improvements (low-risk cleanups) | — | ○ | `specs/15-feature-improvements.md` (Tier 1) |
+| Establish testing strategy + starter tests | — | ◐ | `specs/14-testing-strategy.md` (swift-testing adopted; 18 starter tests landed for `PointTagParser` + `PointCoordinateMath`; CI workflow on disk but gated by fork-Actions consent) |
+| Apply audit-driven feature improvements (low-risk cleanups) | — | ◐ | `specs/15-feature-improvements.md` (Tier 1: §1.1, §1.3, §1.4, §1.5, §1.6, §1.9 shipped; §1.2, §1.7, §1.8, §1.10 pending) |
 | Remove dead code (OpenAIAPI.swift, ElementLocationDetector.swift, legacy WPM helpers) | — | ⏺ | `specs/15-feature-improvements.md` §1.4–§1.6 |
-| Write ADRs for the existing system | — | ◐ | `adr/0001` through `adr/0014` |
-| Re-enable Sparkle auto-update | — | ○ | `specs/15-feature-improvements.md` |
+| Re-enable Sparkle auto-update | — | ⏺ | `specs/15-feature-improvements.md` §1.1 (commit `be8bd80`) |
+| Extract Claude system prompts to a focused file | — | ⏺ | `specs/15-feature-improvements.md` §1.9 (commit `a4fe403`) |
+| Extract `PointTagParser` + `PointCoordinateMath` from `CompanionManager` | — | ⏺ | `specs/15-feature-improvements.md` §1.3 (commit `eeea49c`) |
+| CI workflow + local test runner | — | ◐ | `specs/14-testing-strategy.md` (workflow files on disk, fork Actions consent pending) |
+| Worker vitest suite (17 tests) | — | ⏺ | `specs/14-testing-strategy.md` open question #5 (commit `2c752d5`) |
+| Tier-3 polish mini-specs (panic clear, feedback form, latency metric, login-item opt-in) | — | ⏺ | `specs/16-tier-3-polish.md` |
+| Write ADRs for the existing system (0001–0014) | — | ⏺ | `adr/` |
+| Write ADRs for planned decisions (0015–0023) | — | ⏺ | `adr/` |
 
-Exit criteria: no file over 600 LOC in the renamed slices; tests pass on CI; ADRs 1–14 merged.
+Exit criteria: no file over 600 LOC in the renamed slices; tests pass on CI (blocked by fork-Actions consent at https://github.com/mlnomadpy/clicky/actions); ADRs 1–14 merged.
 
 ### Phase 1 — Local-mode foundations (cheap wins, no new product surface)
 
