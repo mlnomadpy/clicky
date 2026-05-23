@@ -1,0 +1,118 @@
+name: Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  unit:
+    name: Unit + integration tests
+    runs-on: macos-14
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js for the local Worker
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install Worker dependencies
+        working-directory: worker
+        run: npm install
+
+      # The integration tests need a local Cloudflare Worker on :8787 so they
+      # never call the real upstreams (see docs/specs/14-testing-strategy.md).
+      # The Worker may fail to start when .dev.vars is missing (CI has no
+      # secrets wired up yet). That's tolerated — the unit job still runs,
+      # and the integration tests don't exist yet. Once stub keys land, this
+      # step becomes required.
+      - name: Start local Cloudflare Worker
+        id: start_worker
+        working-directory: worker
+        continue-on-error: true
+        run: |
+          npx wrangler dev --port 8787 &
+          echo "WORKER_PID=$!" >> "$GITHUB_ENV"
+          # Poll the Worker until it answers or we give up after 30s.
+          npx --yes wait-on http://localhost:8787 --timeout 30000 || {
+            echo "Local Worker did not come up — integration tests that need it will be skipped."
+            exit 1
+          }
+
+      - name: Run xcodebuild test
+        run: |
+          xcodebuild test \
+            -project leanring-buddy.xcodeproj \
+            -scheme leanring-buddy \
+            -destination 'platform=macOS' \
+            -resultBundlePath TestResults.xcresult
+
+      - name: Stop local Cloudflare Worker
+        if: always()
+        run: |
+          if [ -n "${WORKER_PID:-}" ]; then
+            kill "$WORKER_PID" 2>/dev/null || true
+          fi
+
+      - name: Upload xcresult bundle
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-unit
+          path: TestResults.xcresult
+
+  ui:
+    name: UI tests (release candidates only)
+    # UI tests take 2–3 minutes per test and are too slow for every PR.
+    # Per docs/specs/14-testing-strategy.md they only run on release/*
+    # branches that are candidates for shipping.
+    if: startsWith(github.ref, 'refs/heads/release/')
+    runs-on: macos-14
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js for the local Worker
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install Worker dependencies
+        working-directory: worker
+        run: npm install
+
+      - name: Start local Cloudflare Worker
+        working-directory: worker
+        continue-on-error: true
+        run: |
+          npx wrangler dev --port 8787 &
+          echo "WORKER_PID=$!" >> "$GITHUB_ENV"
+          npx --yes wait-on http://localhost:8787 --timeout 30000 || {
+            echo "Local Worker did not come up — UI tests that need it will be skipped."
+            exit 1
+          }
+
+      - name: Run UI tests via xcodebuild
+        run: |
+          xcodebuild test \
+            -project leanring-buddy.xcodeproj \
+            -scheme leanring-buddy \
+            -destination 'platform=macOS' \
+            -only-testing:leanring-buddyUITests \
+            -resultBundlePath TestResultsUI.xcresult
+
+      - name: Stop local Cloudflare Worker
+        if: always()
+        run: |
+          if [ -n "${WORKER_PID:-}" ]; then
+            kill "$WORKER_PID" 2>/dev/null || true
+          fi
+
+      - name: Upload UI xcresult bundle
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-ui
+          path: TestResultsUI.xcresult
