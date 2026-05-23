@@ -67,7 +67,7 @@ This is also the most-tested function we have (every `[POINT:x,y]` flows through
 
 **Risk**: low.
 
-*Status: planned for Wave-2 PR — see `DELETION_PLAN.md`.*
+*Status: shipped in phase-0/delete-dead-code.*
 
 ### 1.5 Remove or document the legacy `WindowPositionManager` helpers
 
@@ -77,7 +77,7 @@ This is also the most-tested function we have (every `[POINT:x,y]` flows through
 
 **Risk**: low.
 
-*Status: planned for Wave-2 PR — see `DELETION_PLAN.md`.*
+*Status: shipped in phase-0/delete-dead-code.*
 
 ### 1.6 Remove or wire `ElementLocationDetector`
 
@@ -92,7 +92,7 @@ This is also the most-tested function we have (every `[POINT:x,y]` flows through
 
 **Risk**: low.
 
-*Status: planned for Wave-2 PR — see `DELETION_PLAN.md`.*
+*Status: shipped in phase-0/delete-dead-code.*
 
 ### 1.7 Hide the unused "Show Clicky" UI section behind a feature flag
 
