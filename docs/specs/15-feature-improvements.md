@@ -67,6 +67,8 @@ This is also the most-tested function we have (every `[POINT:x,y]` flows through
 
 **Risk**: low.
 
+*Status: planned for Wave-2 PR — see `DELETION_PLAN.md`.*
+
 ### 1.5 Remove or document the legacy `WindowPositionManager` helpers
 
 **Current state**: `WindowPositionManager.swift` has two methods that are no longer called from the active code: `pinMainWindowToRight(onDisplayID:)` and `shrinkOverlappingFocusedWindow(targetDisplayID:)`. They were used when Clicky had a docked main window; now it doesn't.
@@ -74,6 +76,8 @@ This is also the most-tested function we have (every `[POINT:x,y]` flows through
 **Fix**: delete both methods. The permission utilities (`hasAccessibilityPermission`, `requestAccessibilityPermission`, etc.) stay — they're the file's actual purpose. Rename the file to `PermissionsHelper.swift` and move it under `Features/Permissions/`.
 
 **Risk**: low.
+
+*Status: planned for Wave-2 PR — see `DELETION_PLAN.md`.*
 
 ### 1.6 Remove or wire `ElementLocationDetector`
 
@@ -87,6 +91,8 @@ This is also the most-tested function we have (every `[POINT:x,y]` flows through
 **Recommendation**: A for now. Local mode pointing is being designed from scratch with Vision OCR + Foundation Models; reusing this file would mostly be a name collision. We can resurrect it from git if the design calls for it.
 
 **Risk**: low.
+
+*Status: planned for Wave-2 PR — see `DELETION_PLAN.md`.*
 
 ### 1.7 Hide the unused "Show Clicky" UI section behind a feature flag
 

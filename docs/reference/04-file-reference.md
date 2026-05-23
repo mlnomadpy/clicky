@@ -51,7 +51,7 @@ The folder name retains the misspelling intentionally. **Do not rename.**
 | File | Lines | Role |
 |------|-------|------|
 | `ClaudeAPI.swift` | 291 | Streaming SSE client through the Worker `/chat` route. TLS warmup HEAD. Detects PNG vs JPEG and sets `media_type` accordingly. Builds conversation messages with image content blocks. Non-streaming `analyzeImage` variant for validation. |
-| `OpenAIAPI.swift` | 142 | OpenAI Chat Completions vision client. Direct to `api.openai.com` (no proxy) — used only when wired in via a configured key. Not on the active hot path. |
+| `OpenAIAPI.swift` | 142 | OpenAI Chat Completions vision client. Direct to `api.openai.com` (no proxy) — used only when wired in via a configured key. Not on the active hot path. 🪦 SCHEDULED FOR REMOVAL — see `DELETION_PLAN.md`. |
 | `ElevenLabsTTSClient.swift` | 81 | POST to Worker `/tts` with `eleven_flash_v2_5`. Plays the returned MP3 via `AVAudioPlayer`. Exposes `isPlaying` and `stopPlayback()`. |
 
 ### Screen + overlay
@@ -61,7 +61,7 @@ The folder name retains the misspelling intentionally. **Do not rename.**
 | `CompanionScreenCaptureUtility.swift` | 132 | One-shot multi-monitor JPEG capture. Excludes our own windows. Returns `CompanionScreenCapture` with both screenshot pixel dimensions and AppKit-coordinate display frame. |
 | `OverlayWindow.swift` | 881 | `OverlayWindow : NSWindow` (one per screen), `BlueCursorView` (the cursor-following triangle and its modes: navigating, pointing, waveform, spinner), onboarding video player (`OnboardingVideoPlayerView` wrapping `AVPlayerLayer`), `OverlayWindowManager` (creates/removes per-screen windows, fade-out). |
 | `CompanionResponseOverlay.swift` | 217 | SwiftUI view for the response text bubble and waveform displayed next to the cursor. (Note: response text rendering during streaming is currently disabled — the spinner stays until TTS plays.) |
-| `ElementLocationDetector.swift` | 335 | Utility for detecting UI element locations inside a screenshot. Not on the current hot path (Claude returns coordinates directly via the `[POINT:...]` tag), but kept for future use. |
+| `ElementLocationDetector.swift` | 335 | Utility for detecting UI element locations inside a screenshot. Not on the current hot path (Claude returns coordinates directly via the `[POINT:...]` tag), but kept for future use. 🪦 SCHEDULED FOR REMOVAL — see `DELETION_PLAN.md`. |
 
 ### Cross-cutting
 
@@ -69,7 +69,7 @@ The folder name retains the misspelling intentionally. **Do not rename.**
 |------|-------|------|
 | `DesignSystem.swift` | 880 | The `DS` namespace — colors (`DS.Colors.overlayCursorBlue` etc.), corner radii, button/pointer-cursor view modifiers, and shared SwiftUI styles. All UI imports from here. |
 | `ClickyAnalytics.swift` | 121 | PostHog wrapper. Centralized event names and properties. |
-| `WindowPositionManager.swift` | 262 | Static helpers for Accessibility/Screen Recording permission requests (single-prompt-then-Settings strategy). Also a couple of legacy `pinMainWindowToRight` / `shrinkOverlappingFocusedWindow` helpers — not on the current hot path. |
+| `WindowPositionManager.swift` | 262 | Static helpers for Accessibility/Screen Recording permission requests (single-prompt-then-Settings strategy). Also a couple of legacy `pinMainWindowToRight` / `shrinkOverlappingFocusedWindow` helpers — not on the current hot path. 🪦 SCHEDULED FOR REMOVAL (legacy helpers only; permission utilities stay) — see `DELETION_PLAN.md`. |
 | `AppBundleConfiguration.swift` | 28 | Reads strings from `Bundle.main.infoDictionary` with whitespace trimming and a resource-path fallback. |
 
 ### Resources & manifests
