@@ -39,16 +39,16 @@ Non-goals: chasing a coverage number. Coverage targets create incentives to test
 
 ## Framework choice
 
-**XCTest** for everything. Reasons:
+**swift-testing** for unit and integration tests; **XCTest** + **XCUITest** for UI tests. Reasons:
 
-- Ships with Xcode, no SPM dependency.
-- Sup­ports `async`/`await` test methods natively.
-- `XCTestExpectation` covers the async-callback cases (CGEvent tap simulation, websocket events).
-- `XCUITest` covers the UI tests.
+- The existing `leanring_buddyTests.swift` stub already uses `swift-testing` (`@Test func ...`, `#expect(...)`). Reality on the ground beats the original "stay on XCTest" plan.
+- `swift-testing` is the WWDC 2024 framework, ships with Xcode 16+, supports `async`/`await` natively, has nicer parameterized-test ergonomics (`@Test(arguments:)`), and produces clearer failure messages.
+- The two frameworks coexist in the same target — old XCTest tests keep working; new tests are written in `swift-testing` style.
+- `XCUITest` remains the only option for UI tests today.
 
-Considered Quick/Nimble — rejected as unnecessary dependency. `XCTAssertEqual` is fine.
+Considered Quick/Nimble — rejected as unnecessary dependency. `#expect(...)` is fine.
 
-For Swift 6 strict concurrency, tests use `@MainActor` where they need to touch the published state objects.
+For Swift 6 strict concurrency, test types are `struct` (the `swift-testing` default — value type, instantiated per `@Test`), and `@MainActor` is applied where tests need to touch the published state objects.
 
 ## What we test
 
@@ -352,7 +352,7 @@ We allow the rule to bend for exploratory work (spikes, prototypes), but the mom
 
 ## Open questions
 
-1. **Should we adopt swift-testing** (Apple's newer test framework introduced at WWDC24) instead of XCTest? Recommendation: stay on XCTest for now. Swift-testing is good but the integration with Xcode and CI tools is still maturing. Revisit in 2027.
+1. **swift-testing adoption** — *resolved*. Reality check during Wave 2.4 revealed the existing test stub uses `swift-testing` already; new tests use it as well. XCTest stays for UI tests (`XCUITest`).
 2. **Coverage gate in CI?** Recommendation: no minimum threshold gate — that gamifies the wrong thing. Show coverage as a report, but don't fail PRs on it.
 3. **Property-based testing for the parsers?** `swift-testing-extensions` or `SwiftCheck`. Recommendation: defer. The fixture-based tests catch the high-value cases.
 4. **How do we test the bezier-arc animation?** Snapshot tests of intermediate frames are brittle. Recommendation: test the *math* (`BuddyNavigationAnimator.positionAt(t:)`) with unit tests, leave the rendering to manual QA + UI smoke tests.
